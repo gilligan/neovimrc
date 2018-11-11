@@ -1,0 +1,72 @@
+snippet rinto "render into"
+TestUtils.renderIntoDocument(${VISUAL}${1:component});$0
+endsnippet
+
+snippet scrytag "scryRenderedDomComponentsWithTag"
+TestUtils.scryRenderedDOMComponentsWithTag(${VISUAL}${1:component}, '${VISUAL}${2:tag}');$0
+endsnippet
+
+snippet find "findDOMNode"
+React.findDOMNode(${VISUAL}${1:node});$0
+endsnippet
+
+snippet cldecl "react class declaration" b
+import React from 'react';
+
+class ${VISUAL}${1:classname} extends ${VISUAL}${2:React.Component} {
+	$0
+}
+export default $1;
+endsnippet
+
+snippet stdecl "react store declaration" b
+import { BaseStore } from 'fluxible/addons';
+
+class ${VISUAL}${1:classname} extends ${VISUAL}${2:BaseStore} {
+	$0
+}
+export default $1;
+endsnippet
+
+snippet stconn "connect to fluxible stores"
+connectToStores(${VISUAL}${1:component}, [${VISUAL}${2:stores}], (context) => {
+	$0
+});
+endsnippet
+
+snippet '':f "object method string"
+'${1:${2:#thing}:${3:click}}': function (element) {
+	${VISUAL}$0
+}${10:,}
+endsnippet
+
+snippet :f "Object Method"
+${1:method_name}: function (${3:attribute}) {
+	${VISUAL}$0
+}${10:,}
+endsnippet
+
+snippet des "Describe (js)" b
+describe('${1:description}', function () {
+	$0
+});
+endsnippet
+
+snippet it "it (js)" b
+it('${1:description}', function () {
+	$0
+});
+endsnippet
+
+snippet bef "before each (js)" b
+beforeEach(function () {
+	$0
+});
+endsnippet
+
+snippet aft "after each (js)" b
+afterEach(function () {
+	$0
+});
+endsnippet
+
