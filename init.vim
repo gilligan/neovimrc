@@ -26,11 +26,11 @@ Plug 'honza/vim-snippets'
 Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
 
 "
-" javascript stuff
+" web stuff
 "
-Plug 'othree/html5.vim'
+Plug 'othree/html5.vim', { 'for': 'html' }
 Plug 'mxw/vim-jsx'
-Plug 'elzr/vim-json'
+Plug 'elzr/vim-json', { 'for': 'json' }
 Plug 'janko-m/vim-test'
 
 "
