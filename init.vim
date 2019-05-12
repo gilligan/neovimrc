@@ -70,7 +70,7 @@ Plug 'tpope/vim-fugitive'
 "
 Plug 'itchyny/lightline.vim'
 Plug 'iCyMind/NeoSolarized'
-
+Plug 'maximbaz/lightline-ale'
 "
 " terminal / integration
 "
@@ -250,9 +250,20 @@ let g:ghcimportedfrom_browser = '/usr/bin/chromium-browser'
 " fix highlightning of functions
 set iskeyword+='
 
-function! GhciReload()
-    call VimuxSendText(":r")
-    call VimuxSendKeys("Enter")
+function! Haskell_add_language_pragma()
+  let line = max([0, search('^{-# LANGUAGE', 'n') - 1])
+  :call fzf#run({
+  \ 'source': 'ghc --supported-languages',
+  \ 'sink': {lp -> append(line, "{-# LANGUAGE " . lp . " #-}")},
+  \ 'options': '--multi --ansi --reverse --prompt "LANGUAGE> "',
+  \ 'down': '25%'})
+endfunction
+
+function! Haskell_add_compiler_flag()
+  :call fzf#run({
+  \ 'source': 'ghc --show-options',
+  \ 'sink': {opt -> append(0, "{-# OPTIONS_GHC " . opt . " #-}")},
+  \ 'down': '20%'})
 endfunction
 
 nnoremap <leader>ht :execute "InteroType!"<CR>
@@ -543,24 +554,36 @@ let g:ghci_command_line_options = '-fobject-code'
 let g:lightline = {
       \ 'colorscheme': 'solarized',
       \ }
+let g:lightline.component_expand = {
+      \  'linter_checking': 'lightline#ale#checking',
+      \  'linter_warnings': 'lightline#ale#warnings',
+      \  'linter_errors': 'lightline#ale#errors',
+      \  'linter_ok': 'lightline#ale#ok',
+      \ }
 
+let g:lightline.component_type = {
+      \     'linter_checking': 'left',
+      \     'linter_warnings': 'warning',
+      \     'linter_errors': 'error',
+      \     'linter_ok': 'left',
+      \ }
+let g:lightline.active = { 'right': [[ 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_ok' ]] }
 
-"Scala Linting with neomake
-let g:neomake_sbt_maker = {
-      \ 'exe': 'sbt',
-      \ 'args': ['-Dsbt.log.noformat=true', 'compile'],
-      \ 'append_file': 0,
-      \ 'auto_enabled': 1,
-      \ 'output_stream': 'stdout',
-      \ 'errorformat':
-          \ '%E[%trror]\ %f:%l:\ %m,' .
-            \ '%-Z[error]\ %p^,' .
-            \ '%-C%.%#,' .
-            \ '%-G%.%#'
-     \ }
-let g:neomake_enabled_makers = ['sbt']
+let g:lightline.active = {
+    \ 'left': [ [ 'mode', 'paste' ],
+    \           [ 'readonly', 'filename', 'modified' ] ],
+    \ 'right': [ [ 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_ok' ],
+    \            [ 'lineinfo' ],
+    \            [ 'percent' ],
+    \            [ 'fileformat', 'fileencoding', 'filetype' ] ] }
+let g:lightline.inactive = {
+    \ 'left': [ [ 'filename' ] ],
+    \ 'right': [ [ 'lineinfo' ],
+    \            [ 'percent' ] ] }
+let g:lightline.tabline = {
+    \ 'left': [ [ 'tabs' ] ],
+    \ 'right': [ [ 'close' ] ] }
+
 let g:neomake_verbose=3
-
-
 
 nnoremap <leader>dr :execute "DirenvExport"<CR>
