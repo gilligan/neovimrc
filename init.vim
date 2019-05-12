@@ -6,12 +6,10 @@ call plug#begin('~/.nvim/plugged')
 "
 " tpope essentials
 "
-Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-eunuch'
-Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-markdown'
 Plug 'tpope/vim-vinegar'
@@ -39,33 +37,22 @@ Plug 'janko-m/vim-test'
 Plug 'vim-scripts/textobj-user'
 Plug 'vim-scripts/textobj-entire'
 Plug 'vim-scripts/textobj-line'
-Plug 'kana/vim-textobj-syntax'
 Plug 'thinca/vim-textobj-comment'
-Plug 'bkad/CamelCaseMotion'
 Plug 'mbriggs/mark.vim'
 Plug 'justinmk/vim-sneak'
 Plug 'wellle/targets.vim'
-Plug 'AndrewRadev/sideways.vim'
 Plug 'kana/vim-operator-user'
 Plug 'haya14busa/vim-operator-flashy'
-
-"
-" idris
-"
-Plug 'idris-hackers/idris-vim'
 
 "
 " haskell
 "
 Plug 'neovimhaskell/haskell-vim', { 'for': 'haskell' }
-"Plug 'ndmitchell/ghcid', { 'rtp': 'plugins/nvim' }
-"Plug 'ujihisa/neco-ghc', { 'for': 'haskell' }
-"Plug 'eagletmt/ghcmod-vim', { 'for': 'haskell' }
 Plug 'Twinside/vim-hoogle', { 'for': 'haskell' }
 Plug 'ujihisa/unite-haskellimport', { 'for': 'haskell' }
 Plug 'eagletmt/unite-haddock', { 'for': 'haskell' }
 Plug 'parsonsmatt/intero-neovim', { 'for': 'haskell' }
-Plug 'neomake/neomake', { 'for': ['haskell', 'scala'] }
+Plug 'neomake/neomake', { 'for': ['haskell'] }
 Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
     \ 'do': 'bash install.sh',
@@ -74,15 +61,13 @@ Plug 'autozimu/LanguageClient-neovim', {
 "
 " git / scm
 "
-Plug 'mhinz/vim-signify'
-Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'junegunn/gv.vim'
+"Plug 'mhinz/vim-signify'
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
 
 "
 " themes & looks
 "
-"Plug 'vim-airline/vim-airline'
-"Plug 'vim-airline/vim-airline-themes'
 Plug 'itchyny/lightline.vim'
 Plug 'iCyMind/NeoSolarized'
 
@@ -90,7 +75,6 @@ Plug 'iCyMind/NeoSolarized'
 " terminal / integration
 "
 Plug 'Shougo/vimproc'
-Plug 'Shougo/vimshell.vim'
 Plug 'gilligan/vim-tmux-navigator'
 Plug 'kassio/neoterm'
 
@@ -99,28 +83,20 @@ Plug 'kassio/neoterm'
 "
 Plug 'Valloric/ListToggle'
 Plug 'scrooloose/nerdcommenter'
-Plug 'scrooloose/nerdtree'
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/unite-outline'
-Plug 'Majutsushi/tagbar'
-Plug 'wellle/visual-split.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'kmnk/vim-unite-giti'
 "
 " misc
 "
-Plug 'vim-scripts/UnconditionalPaste'
 Plug 'airblade/vim-rooter'
-Plug 'itchyny/calendar.vim'
 Plug 'LnL7/vim-nix'
 Plug 'w0rp/ale'
-Plug 'dyng/ctrlsf.vim'
 Plug 'krisajenkins/vim-projectlocal'
-Plug 'tyru/open-browser.vim'
 Plug 'fszymanski/deoplete-emoji'
-"Plug 'ensime/ensime-vim', { 'do': ':UpdateRemotePlugins' }
-Plug 'derekwyatt/vim-scala', { 'for': 'scala' }
+Plug 'direnv/direnv.vim'
+Plug 'iamcco/markdown-preview.nvim'
 
 call plug#end()
 
@@ -279,20 +255,19 @@ function! GhciReload()
     call VimuxSendKeys("Enter")
 endfunction
 
-nnoremap <leader>h= :execute "Tabularize haskell_bindings"<CR>
-nnoremap <leader>ht :execute "GhcModType!"<CR>
-nnoremap <leader>hT :execute "GhcModTypeInsert!"<CR>
-nnoremap <leader>hc :execute "GhcModTypeClear"<CR>
-nnoremap <leader>hi :execute "GhcModInfoPreview!"<CR>
+nnoremap <leader>ht :execute "InteroType!"<CR>
+nnoremap <leader>hT :execute "InteroTypeInsert!"<CR>
+nnoremap <leader>hr :execute "InteroReload!"<CR>
 nnoremap <leader>hh :execute "GhcImportedFromOpenHaddock"<CR>
-nnoremap <leader>hg :execute "GhcModSigCodegen"<CR>
+
 nnoremap <leader>hI :execute "Unite -start-insert haskellimport"<CR>
-nnoremap <leader>hr :call GhciReload()<CR>
 nnoremap <leader>hs :execute "Unite hoogle"<CR>
-nnoremap <leader>hb k0yiWjpA
+
 nnoremap <leader>tn :execute "Tnew"<CR>
 nnoremap <leader>tt :execute "Ttoggle"<CR>
 nnoremap <leader>tc :execute "Tclose"<CR>
+
+nnoremap <leader>sh :GitGutterStageHunk<CR>
 
 
 function! s:tags_sink(line)
@@ -585,3 +560,7 @@ let g:neomake_sbt_maker = {
      \ }
 let g:neomake_enabled_makers = ['sbt']
 let g:neomake_verbose=3
+
+
+
+nnoremap <leader>dr :execute "DirenvExport"<CR>
