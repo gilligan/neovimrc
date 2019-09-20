@@ -87,6 +87,7 @@ Plug 'Shougo/unite.vim'
 Plug 'Shougo/unite-outline'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'scrooloose/nerdtree'
 "
 " misc
 "
@@ -97,6 +98,13 @@ Plug 'krisajenkins/vim-projectlocal'
 Plug 'fszymanski/deoplete-emoji'
 Plug 'direnv/direnv.vim'
 Plug 'iamcco/markdown-preview.nvim'
+
+
+"
+" Rust
+"
+"Plug 'racer-rust/vim-racer'
+Plug 'rust-lang/rust.vim'
 
 call plug#end()
 
@@ -266,10 +274,10 @@ function! Haskell_add_compiler_flag()
   \ 'down': '20%'})
 endfunction
 
-nnoremap <leader>ht :execute "InteroType!"<CR>
-nnoremap <leader>hT :execute "InteroTypeInsert!"<CR>
-nnoremap <leader>hr :execute "InteroReload!"<CR>
-nnoremap <leader>hh :execute "GhcImportedFromOpenHaddock"<CR>
+"nnoremap <leader>ht :execute "InteroType!"<CR>
+"nnoremap <leader>hT :execute "InteroTypeInsert!"<CR>
+"nnoremap <leader>hr :execute "InteroReload!"<CR>
+"nnoremap <leader>hh :execute "GhcImportedFromOpenHaddock"<CR>
 
 nnoremap <leader>hI :execute "Unite -start-insert haskellimport"<CR>
 nnoremap <leader>hs :execute "Unite hoogle"<CR>
@@ -277,6 +285,7 @@ nnoremap <leader>hs :execute "Unite hoogle"<CR>
 nnoremap <leader>tn :execute "Tnew"<CR>
 nnoremap <leader>tt :execute "Ttoggle"<CR>
 nnoremap <leader>tc :execute "Tclose"<CR>
+nnoremap <leader>ts :split <bar> :terminal<CR>
 
 nnoremap <leader>sh :GitGutterStageHunk<CR>
 
@@ -455,17 +464,21 @@ endif
 " ale linters
 "
 "let g:ale_linters = {'haskell': ['hlint', 'intero', 'ghc']}
-let g:ale_linters = {'haskell': ['hlint', 'ghc']}
+let g:ale_linters = {}
+let g:ale_linters.haskell = ['hlint']
+"let g:ale_linters.haskell = ['hlint', 'cabal_ghc']
+let g:ale_linters.rust = ['cargo']
 let g:ale_haskell_ghc_options = '-fno-code -v0 -isrc'
+let g:ale_rust_cargo_use_clippy = executable('cargo-clippy')
 
+let g:LanguageClient_useVirtualText = 0
 let g:LanguageClient_rootMarkers = ['*.cabal']
-"let g:LanguageClient_serverCommands = {
-    "\ 'haskell': ['hie-8.2', '--lsp'],
-    "\ }
+let g:LanguageClient_serverCommands = {
+    \ 'rust': ['rls'],
+    \ 'haskell': ['ghcide-wrapper', '--lsp'],
+    \ }
 
-" ctrlsf settings
-nmap     <leader>f <Plug>CtrlSFPrompt
-
+    
 " Sideways mapping
 nnoremap <leader>[ :SidewaysLeft<CR>
 nnoremap <leader>] :SidewaysRight<CR>
@@ -586,4 +599,19 @@ let g:lightline.tabline = {
 
 let g:neomake_verbose=3
 
+"
+" vim-rooter settings
+"
+let g:rooter_patterns = ['.git', '.git/', 'Setup.hs']
+
 nnoremap <leader>dr :execute "DirenvExport"<CR>
+
+let g:ale_writegood_options = "--no-weasel --no-passive"
+
+
+
+nnoremap <leader>ht :execute "InteroType!"<CR>
+
+nnoremap <leader>ht :call LanguageClient_textDocument_hover()<CR>
+nnoremap <leader>hd :call LanguageClient_textDocument_definition()<CR>
+nnoremap <leader>rn :call LanguageClient_textDocument_rename()<CR>
