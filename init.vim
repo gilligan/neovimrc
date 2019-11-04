@@ -176,17 +176,7 @@ let g:neosolarized_contrast = "high"
 let g:neosolarized_visibility = "high"
 colo NeoSolarized
 
-"
-" deoplete tern settings
-"
-let g:deoplete#sources#ternjs#types = 1
 
-
-" airline settings
-"
-let g:airline_powerline_fonts = 1
-let g:airline_theme='solarized'
-let g:airline#extensions#ale#enabled = 1
 
 "
 " auto commands
@@ -221,12 +211,6 @@ nnoremap <silent> Q :call CloseWindowOrKillBuffer()<CR>
 
 
 "
-" fugitive plugin
-"
-let g:github_enterprise_urls = ['https://github.hc.ag']
-autocmd QuickFixCmdPost *grep* cwindow
-
-"
 " haskell-vim settings
 "
 
@@ -242,17 +226,6 @@ let g:haskell_backpack = 1                " to enable highlighting of backpack k
 let g:haskell_indent_case_alternative = 1
 
 call unite#custom_default_action('haddock', 'browse_remote')
-
-"
-" configuration for necoghc
-"
-let g:necoghc_enable_detailed_browse = 1
-let g:necoghc_debug = 1
-let g:necoghc_use_stack = 0
-"
-" configuration for ghcimportedfrom-vim
-"
-let g:ghcimportedfrom_browser = '/usr/bin/chromium-browser'
 
 
 " fix highlightning of functions
@@ -273,11 +246,6 @@ function! Haskell_add_compiler_flag()
   \ 'sink': {opt -> append(0, "{-# OPTIONS_GHC " . opt . " #-}")},
   \ 'down': '20%'})
 endfunction
-
-"nnoremap <leader>ht :execute "InteroType!"<CR>
-"nnoremap <leader>hT :execute "InteroTypeInsert!"<CR>
-"nnoremap <leader>hr :execute "InteroReload!"<CR>
-"nnoremap <leader>hh :execute "GhcImportedFromOpenHaddock"<CR>
 
 nnoremap <leader>hI :execute "Unite -start-insert haskellimport"<CR>
 nnoremap <leader>hs :execute "Unite hoogle"<CR>
@@ -330,10 +298,6 @@ imap <C-E> <C-O>$
 imap <C-A> <C-O>^
 
 
-" paste clipboard contents
-map ,p "+p
-nmap  ,q  :bd<CR>
-
 " list lines containing word under cursor
 map ,l [I:let nr = input("select: ")<Bar>exe "normal " . nr ."[\t"<CR>
 " list occurences count of word under cursor
@@ -358,16 +322,6 @@ vnoremap ; y:<C-r>"<C-b>
 " home row leader key mappings
 "
 nnoremap <leader><CR> :NERDTreeToggle<CR>
-" nnoremap <leader>s <Plug>SlimeParagraphSend()
-" nnoremap <leader>d YCM           <-- get rid of this
-"nnoremap <leader>f :Unite -start-insert file_rec/async<CR>
-" nnoremap <leader>g Signify       <-- get rid of this
-" nnoremap <leader>hlt HiLinkTrace <-- get rid of this
-" nnoremap <leader>j               <-- SPACE FOR RENT
-" nnoremap <leader>k               <-- SPACE FOR RENT
-" nnoremap <leader>l  ListToggle
-" nnoremap <leader>;               <-- SPACE FOR RENT
-" nnoremap <leader>'               <-- SPACE FOR RENT
 
 "
 " non-home row leader mappings
@@ -414,10 +368,6 @@ let g:UltiSnipsExpandTrigger = "<C-K>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 
-let g:dash_map = {
-    \ 'javascript': [ 'javascript', 'nodejs', 'ramda' ]
-    \}
-
 "
 " vim test settings
 "
@@ -425,7 +375,6 @@ nnoremap <leader>mr :TestFile<CR>
 nnoremap <leader>mi :TestNearest<CR>
 nnoremap <leader>ml :TestLast<CR>
 nnoremap <leader>mc :Tclose<CR>
-"let test#strategy = 'neoterm'
 let test#strategy = 'neovim'
 
 " Zoom / Restore window.
@@ -471,6 +420,7 @@ let g:ale_linters.rust = ['cargo']
 let g:ale_haskell_ghc_options = '-fno-code -v0 -isrc'
 let g:ale_rust_cargo_use_clippy = executable('cargo-clippy')
 
+let g:LanguageClient_useFloatingHover = 1
 let g:LanguageClient_useVirtualText = 0
 let g:LanguageClient_rootMarkers = ['*.cabal']
 let g:LanguageClient_serverCommands = {
@@ -546,20 +496,6 @@ let g:ghci_start_immediately = 1
 let g:ghci_command = 'cabal new-repl'
 let g:ghci_command_line_options = '-fobject-code'
 
-"
-" Nix LSP
-"
-"let g:LanguageClient_serverCommands = {
-      "\ 'nix': ['nix-lsp'],
-      "\ }
-"let g:LanguageClient_loadSettings = 1
-"nnoremap <F5> :call LanguageClient_contextMenu()<CR>
-"nnoremap <silent> nh :call LanguageClient_textDocument_hover()<CR>
-"nnoremap <silent> nd :call LanguageClient_textDocument_definition()<CR>
-"nnoremap <silent> nr :call LanguageClient_textDocument_references()<CR>
-"nnoremap <silent> ns :call LanguageClient_textDocument_documentSymbol()<CR>
-"nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
-"nnoremap <silent> nf :call LanguageClient_textDocument_formatting()<CR>
 
 "
 " vim lightline
@@ -612,6 +548,8 @@ let g:ale_writegood_options = "--no-weasel --no-passive"
 
 nnoremap <leader>ht :execute "InteroType!"<CR>
 
-nnoremap <leader>ht :call LanguageClient_textDocument_hover()<CR>
-nnoremap <leader>hd :call LanguageClient_textDocument_definition()<CR>
-nnoremap <leader>rn :call LanguageClient_textDocument_rename()<CR>
+nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+nnoremap <leader>lh :call LanguageClient_textDocument_hover()<CR>
+nnoremap <leader>ld :call LanguageClient_textDocument_definition()<CR>
+nnoremap <leader>lr :call LanguageClient_textDocument_rename()<CR>
+nnoremap <leader>lc :call LanguageClient_contextMenu()<CR> 
